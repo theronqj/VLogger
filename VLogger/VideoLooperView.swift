@@ -50,4 +50,12 @@ class VideoLooperView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func pause() {
+        player.pause()
+    }
+    
+    func play() {
+        player.play()
+    }
 }
