@@ -17,6 +17,32 @@ class VideoLooperView: UIView {
         self.clips = clips
         
         super.init(frame: .zero)
+        
+        initializePlayer()
+    }
+    
+    @objc private let player = AVQueuePlayer()
+    private var token: NSKeyValueObservation?
+    
+    private func initializePlayer() {
+        videoPlayerView.player = player
+        addAllVideosToPlayer()
+        player.volume = 0.0
+        player.play()
+        token = player.observe(\.currentItem) { [weak self] player, _ in
+            if player.items().count == 1 {
+                self?.addAllVideosToPlayer()
+            }
+        }
+    }
+    
+    private func addAllVideosToPlayer() {
+        for video in clips {
+            let asset = AVURLAsset(url: video.url)
+            let item = AVPlayerItem(asset: asset)
+            
+            player.insert(item, after: player.items().last)
+        }
     }
     
     // MARK - Unnecessary but necessary Code

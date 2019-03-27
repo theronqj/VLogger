@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         
         let feed = VideoFeedViewController()
-        feed.videos = Video.localVideos()
+        feed.videos = Video.allVideos()
         feed.title = "VLogger"
         
         let nav = UINavigationController(rootViewController: feed)
