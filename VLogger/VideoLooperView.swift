@@ -19,9 +19,17 @@ class VideoLooperView: UIView {
         super.init(frame: .zero)
         
         initializePlayer()
+        addGestureReconizers()
     }
     
     @objc private let player = AVQueuePlayer()
+    @objc func wasTapped() {
+        player.volume = player.volume == 1.0 ? 0.0 : 1.0
+    }
+    @objc func wasDoubleTapped() {
+        player.rate = player.rate == 1.0 ? 2.0 : 1.0
+    }
+    
     private var token: NSKeyValueObservation?
     
     private func initializePlayer() {
@@ -43,6 +51,18 @@ class VideoLooperView: UIView {
             
             player.insert(item, after: player.items().last)
         }
+    }
+    
+    func addGestureReconizers() {
+        // 2 taps w/ method assignment
+        let tap = UITapGestureRecognizer(target: self, action: #selector(VideoLooperView.wasTapped))
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(VideoLooperView.wasDoubleTapped))
+        doubleTap.numberOfTapsRequired = 2
+        
+        tap.require(toFail: doubleTap)
+        
+        addGestureRecognizer(tap)
+        addGestureRecognizer(doubleTap)
     }
     
     // MARK - Unnecessary but necessary Code
